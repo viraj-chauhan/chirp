@@ -56,6 +56,8 @@ function ThreadView({ thread }: { thread: Thread }) {
   const [likedComments, setLikedComments] = useState<Set<string>>(new Set());
   const [expandedReplies, setExpandedReplies] = useState<Set<string>>(new Set());
   const [topicFilter, setTopicFilter] = useState<string>("all");
+  const [commentText, setCommentText] = useState("");
+  const [localComments, setLocalComments] = useState<Array<{id: string; userId: string; userName: string; userAvatar: string; content: string; likes: number; likedBy: string[]; timestamp: string; replies: []}>>([]);
 
   const linkedWork = thread.sourceWorkId
     ? GOVERNMENT_WORKS.find((w) => w.id === thread.sourceWorkId)
@@ -323,8 +325,78 @@ function ThreadView({ thread }: { thread: Thread }) {
                   </div>
                 );
               })}
-              {!user && (
-                <div className="text-center py-4 border-t border-gray-100">
+              {/* Locally posted comments */}
+              {localComments.map((comment) => {
+                const isLiked = likedComments.has(comment.id);
+                return (
+                  <div key={comment.id} className="flex gap-3">
+                    <span className={`avatar w-8 h-8 ${avatarColor(comment.userId)}`}>
+                      {comment.userAvatar}
+                    </span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-semibold text-gray-800">{comment.userName}</span>
+                        <span className="text-xs text-[#2D7D7E] bg-[#2D7D7E]/10 px-1.5 py-0.5 rounded-full font-medium">Just now</span>
+                      </div>
+                      <p className="text-sm text-gray-700 leading-relaxed">{comment.content}</p>
+                      <button
+                        onClick={() => toggleLike(comment.id)}
+                        className={`flex items-center gap-1 text-xs mt-2 transition-colors ${isLiked ? "text-red-500" : "text-gray-400 hover:text-red-400"}`}
+                      >
+                        <Heart size={13} fill={isLiked ? "currentColor" : "none"} />
+                        {comment.likes + (isLiked ? 1 : 0)}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Comment Input */}
+            <div className="border-t border-gray-100 p-4">
+              {user ? (
+                <div className="flex gap-3">
+                  <span className={`avatar w-8 h-8 flex-shrink-0 ${avatarColor(user.id)}`}>
+                    {user.avatar}
+                  </span>
+                  <div className="flex-1">
+                    <textarea
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                      placeholder="Share your thoughts on this issue…"
+                      rows={2}
+                      className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-[#2D7D7E] resize-none"
+                    />
+                    <div className="flex justify-end mt-1.5">
+                      <button
+                        onClick={() => {
+                          if (!commentText.trim()) return;
+                          setLocalComments((prev) => [
+                            ...prev,
+                            {
+                              id: `lc-${Date.now()}`,
+                              userId: user.id,
+                              userName: user.name,
+                              userAvatar: user.avatar,
+                              content: commentText.trim(),
+                              likes: 0,
+                              likedBy: [],
+                              timestamp: new Date().toISOString(),
+                              replies: [],
+                            },
+                          ]);
+                          setCommentText("");
+                        }}
+                        disabled={!commentText.trim()}
+                        className="px-4 py-1.5 bg-[#2D7D7E] text-white text-sm font-semibold rounded-lg hover:bg-[#236969] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        Post Comment
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-3">
                   <p className="text-sm text-gray-500 mb-2">
                     <Lock size={13} className="inline mr-1" />
                     Login to post a comment
