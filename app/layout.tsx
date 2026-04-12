@@ -6,6 +6,9 @@ import Navbar from "@/components/Navbar";
 export const metadata: Metadata = {
   title: "Chirp – Civic Engagement Portal",
   description: "Debate, Learn, and Track – India's premier civic engagement platform",
+  icons: {
+    icon: "/chirp-logo.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
