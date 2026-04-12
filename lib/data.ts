@@ -270,7 +270,8 @@ export const THREADS: Thread[] = [
             userId: "u-5",
             userName: "Vikram Singh",
             side: "for",
-            content: "A secular state must be neutral in personal law matters. Religion should be a private affair.",
+            content:
+              "A secular state cannot have one set of laws for Hindus, another for Muslims, and yet another for Christians in matters of marriage, divorce, and inheritance. Article 44 of our own Constitution directs the state to secure a Uniform Civil Code. After 76 years of independent India, this is not aspirational — it is overdue. True equality under the law demands it.",
             timestamp: "2026-04-11T14:01:00Z",
           },
           {
@@ -278,22 +279,113 @@ export const THREADS: Thread[] = [
             userId: "u-4",
             userName: "Sneha Gupta",
             side: "against",
-            content: "India's pluralism is a constitutional value, not a problem. Diversity of personal laws reflects our reality.",
-            timestamp: "2026-04-11T14:05:00Z",
+            content:
+              "Article 44 is a Directive Principle — non-justiciable and explicitly aspirational. Meanwhile, Article 25 is a Fundamental Right guaranteeing freedom of religion, which courts have consistently held includes following one's personal religious law in family matters. You cannot override a Fundamental Right with a Directive Principle. The Constitution's framers knew the tension and deliberately kept UCC aspirational.",
+            timestamp: "2026-04-11T14:06:00Z",
+          },
+          {
+            id: "m-47",
+            userId: "u-5",
+            userName: "Vikram Singh",
+            side: "for",
+            content:
+              "Then let us talk about the women bearing the cost of this 'aspiration'. Under Muslim personal law, a husband could unilaterally divorce his wife by saying talaq three times. A woman could be left with no home, no maintenance, and no recourse. The Shayara Bano case forced Parliament to act — but that was one practice. Polygamy, unequal inheritance, and the lack of a clear maintenance framework still remain. UCC is the only systemic fix.",
+            timestamp: "2026-04-11T14:11:00Z",
+          },
+          {
+            id: "m-48",
+            userId: "u-4",
+            userName: "Sneha Gupta",
+            side: "against",
+            content:
+              "Triple talaq was criminalized in 2019 without UCC. That is precisely my point — targeted, specific reform works and is far less disruptive than a wholesale replacement of all personal laws. The same approach can address polygamy and inheritance disparities. Community-driven legal reform, not state imposition, creates durable change. You are using genuine women's grievances to push through a politically convenient blanket solution.",
+            timestamp: "2026-04-11T14:16:00Z",
+          },
+          {
+            id: "m-49",
+            userId: "u-5",
+            userName: "Vikram Singh",
+            side: "for",
+            content:
+              "Goa has had a Uniform Civil Code since the Portuguese Civil Code of 1867 — adopted as national law under Article 44 after liberation. Multiple religions, including Hindus, Muslims, Catholics, and tribal communities, have lived under it for over 150 years. Has Goa collapsed into cultural uniformity? No. It is proof that a common civil law and religious diversity can absolutely coexist in India.",
+            timestamp: "2026-04-11T14:21:00Z",
+          },
+          {
+            id: "m-50",
+            userId: "u-4",
+            userName: "Sneha Gupta",
+            side: "against",
+            content:
+              "Goa's code has documented flaws — it still permits polygamy for Hindu men under certain circumstances, and its treatment of communidade land rights has been contested for decades. More importantly, Goa was a colony under Portuguese law for centuries; that historical context cannot be replicated nationally. And critically, the tribal communities of Nagaland, Meghalaya, and Mizoram have their customary laws constitutionally protected under the Sixth Schedule. UCC would bulldoze over those protections.",
+            timestamp: "2026-04-11T14:26:00Z",
+          },
+          {
+            id: "m-51",
+            userId: "u-5",
+            userName: "Vikram Singh",
+            side: "for",
+            content:
+              "The Supreme Court has repeatedly called for UCC implementation — in Shah Bano (1985), Sarla Mudgal (1995), John Vallamattom (2003), and most recently in 2019. These were not political statements; these were constitutional courts recognizing a gap in India's commitment to equal citizenship. When the highest court of the land has asked Parliament to act four separate times across four decades, the democratic mandate is clear.",
+            timestamp: "2026-04-11T14:31:00Z",
+          },
+          {
+            id: "m-52",
+            userId: "u-4",
+            userName: "Sneha Gupta",
+            side: "against",
+            content:
+              "Those Supreme Court observations were obiter dicta — remarks not binding in law. And when the Law Commission of India was formally asked to study this in 2018, it concluded that UCC is 'neither necessary nor desirable at this stage.' The Commission — the government's own legal advisory body — recommended that discrimination within personal laws be addressed through amendment, not unification. Why are we ignoring that finding?",
+            timestamp: "2026-04-11T14:36:00Z",
+          },
+          {
+            id: "m-53",
+            userId: "u-5",
+            userName: "Vikram Singh",
+            side: "for",
+            content:
+              "Because the Law Commission's 2018 report reflected the political caution of that moment, not a definitive legal conclusion. Uttarakhand enacted a UCC in 2024 — India's first state-level code — covering marriage, divorce, inheritance, and live-in relationships uniformly across all religions. There was no violence, no mass protests, no social breakdown. It is working. Other states and the Centre should follow.",
+            timestamp: "2026-04-11T14:41:00Z",
+          },
+          {
+            id: "m-54",
+            userId: "u-4",
+            userName: "Sneha Gupta",
+            side: "against",
+            content:
+              "Uttarakhand's UCC explicitly excluded Scheduled Tribes — carving out exemptions for political convenience while claiming universal application. It was drafted in months, without a single meaningful public consultation with Muslim, Christian, or tribal stakeholders. Every state that enacted it is BJP-governed; this is not legal reform, it is electoral signalling. If the intent were genuine equity, the government would have set up a national constitutional commission with full cross-community representation.",
+            timestamp: "2026-04-11T14:46:00Z",
+          },
+          {
+            id: "m-55",
+            userId: "u-5",
+            userName: "Vikram Singh",
+            side: "for",
+            content:
+              "You are conflating the current government's political motivations with the principle itself. The right argument is not whether UCC is politically inconvenient right now — it is whether every Indian citizen deserves identical legal protection in family matters regardless of their religion. My answer is yes. A Muslim woman, a Hindu woman, and a Christian woman should all have the same right to divorce, to maintenance, to inherit equally. Anything less is institutionalized inequality.",
+            timestamp: "2026-04-11T14:51:00Z",
+          },
+          {
+            id: "m-56",
+            userId: "u-4",
+            userName: "Sneha Gupta",
+            side: "against",
+            content:
+              "I want that equality too — but the path matters as much as the destination. India's secularism has always meant equal respect for all religions, not the erasure of religious difference from law. Impose a code without community buy-in, and you will harden identities, fuel separatism, and undermine the very national unity you claim to seek. Lasting reform in a pluralist democracy must be earned through dialogue, consultation, and consensus — not legislated from above in an election year.",
+            timestamp: "2026-04-11T14:57:00Z",
           },
         ],
         aiSummary: {
           forPoints: [
-            "UCC is essential for gender equality across all religious communities",
-            "Secular democracy should not have religion-based personal laws",
-            "Article 44 of the Constitution directs the state to work toward UCC",
-            "Muslim women in particular suffer from inequitable personal laws",
+            "UCC is a constitutional mandate under Article 44 and a prerequisite for genuine gender equality — Muslim women still face discriminatory inheritance, divorce, and polygamy practices that only a uniform code can fully address",
+            "Goa's century-old Uniform Civil Code proves religious harmony and a common civil law can coexist; multiple faiths live under it without cultural erasure",
+            "The Supreme Court has called for UCC implementation in four landmark judgments (Shah Bano, Sarla Mudgal, John Vallamattom, 2019) — the democratic and constitutional mandate is unambiguous",
+            "True secularism means the state applies the same law to every citizen regardless of religion; maintaining separate personal laws institutionalizes inequality and contradicts equal citizenship",
           ],
           againstPoints: [
-            "UCC threatens constitutional guarantees of religious freedom (Article 25)",
-            "Tribal communities' customary laws are protected under the Sixth Schedule",
-            "Implementation without community consensus leads to resentment",
-            "Political timing raises concerns about genuine intent vs electoral gain",
+            "Article 25 (Fundamental Right to religious freedom) cannot be overridden by Article 44 (a non-justiciable Directive Principle); targeted reform — as with the triple talaq ban — is both constitutional and more effective",
+            "The Law Commission of India (2018) formally concluded UCC is 'neither necessary nor desirable'; Uttarakhand's implementation excluded Scheduled Tribes and lacked any meaningful cross-community consultation",
+            "Northeast tribal communities' customary laws carry constitutional protection under the Sixth Schedule — national UCC risks overriding these protections and fuelling separatist sentiment",
+            "The political timing — UCC bills in BJP-ruled states ahead of elections, no national commission, no minority stakeholder consultation — suggests electoral signalling over genuine legal reform",
           ],
         },
       },
