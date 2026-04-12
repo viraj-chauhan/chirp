@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { THREADS } from "@/lib/data";
 import { Archive, MessageSquare, Users, BarChart2, ArrowRight } from "lucide-react";
