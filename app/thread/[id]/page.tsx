@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { THREADS } from "@/lib/data";
+import { THREADS, GOVERNMENT_WORKS } from "@/lib/data";
 import { useAuth } from "@/lib/auth-context";
 import {
   Clock, Heart, Reply, ChevronDown, ChevronUp,
   Maximize2, Minimize2, Eye, Swords, ArrowRight, Lock,
-  CheckCircle2, BarChart2, Filter
+  CheckCircle2, BarChart2, Filter, ExternalLink
 } from "lucide-react";
 import type { Thread } from "@/lib/types";
 
@@ -56,6 +56,10 @@ function ThreadView({ thread }: { thread: Thread }) {
   const [likedComments, setLikedComments] = useState<Set<string>>(new Set());
   const [expandedReplies, setExpandedReplies] = useState<Set<string>>(new Set());
   const [topicFilter, setTopicFilter] = useState<string>("all");
+
+  const linkedWork = thread.sourceWorkId
+    ? GOVERNMENT_WORKS.find((w) => w.id === thread.sourceWorkId)
+    : null;
 
   const topics = [...new Set(thread.debates.map((d) => d.topic))];
   const sortedDebates = [...thread.debates]
@@ -154,6 +158,53 @@ function ThreadView({ thread }: { thread: Thread }) {
           </div>
         </div>
       </div>
+
+      {/* Linked Government Work Panel */}
+      {linkedWork && (
+        <div className="bg-[#2D7D7E]/5 border border-[#2D7D7E]/25 rounded-xl p-5 mb-5">
+          <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <BarChart2 size={18} className="text-[#2D7D7E]" />
+              <h3 className="font-bold text-[#2D7D7E] text-sm">
+                This debate is based on real data from the Government Works Tracker
+              </h3>
+            </div>
+            <Link
+              href="/transparency"
+              className="flex items-center gap-1 text-xs font-semibold text-[#2D7D7E] hover:text-[#236969] underline underline-offset-2"
+            >
+              Open Tracker <ExternalLink size={12} />
+            </Link>
+          </div>
+          <p className="text-sm font-semibold text-gray-800 mb-3">{linkedWork.title}</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+            {[
+              { label: "Location", value: linkedWork.district + ", " + linkedWork.state },
+              { label: "Allocated Budget", value: `₹${linkedWork.allocatedBudget} lakh` },
+              { label: "Funds Used", value: `₹${linkedWork.usedBudget} lakh` },
+              { label: "Progress", value: `${linkedWork.progress}% — ${linkedWork.status.toUpperCase()}` },
+            ].map((s) => (
+              <div key={s.label} className="bg-white rounded-lg px-3 py-2 border border-[#2D7D7E]/15">
+                <p className="text-xs text-gray-500">{s.label}</p>
+                <p className={`text-sm font-bold ${s.label === "Progress" && linkedWork.status === "delayed" ? "text-amber-600" : "text-gray-800"}`}>
+                  {s.value}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="progress-bar">
+            <div
+              className="progress-fill bg-amber-500"
+              style={{ width: `${linkedWork.progress}%` }}
+            />
+          </div>
+          <p className="text-xs text-gray-500 mt-2">
+            MP: <span className="font-medium">{linkedWork.mp}</span> &nbsp;·&nbsp;
+            MLA: <span className="font-medium">{linkedWork.mla}</span> &nbsp;·&nbsp;
+            Scheme: <span className="font-medium">{linkedWork.scheme}</span>
+          </p>
+        </div>
+      )}
 
       {/* AI Summary after deadline */}
       {isDeadlinePassed && thread.commonPointsSummary && (

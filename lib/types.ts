@@ -70,6 +70,7 @@ export interface Thread {
   tags: string[];
   debates: Debate[];
   comments: Comment[];
+  sourceWorkId?: string;
   commonPointsSummary?: {
     forPoints: string[];
     againstPoints: string[];

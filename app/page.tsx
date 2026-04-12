@@ -1,17 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { THREADS } from "@/lib/data";
-import { Clock, Users, MessageSquare, Tag, ArrowRight, Flame } from "lucide-react";
-
-function timeAgo(iso: string) {
-  const diff = Date.now() - new Date(iso).getTime();
-  const h = Math.floor(diff / 3600000);
-  const m = Math.floor(diff / 60000);
-  if (h >= 24) return `${Math.floor(h / 24)}d ago`;
-  if (h >= 1) return `${h}h ago`;
-  return `${m}m ago`;
-}
+import { THREADS, GOVERNMENT_WORKS } from "@/lib/data";
+import { Clock, Users, MessageSquare, Tag, ArrowRight, Flame, BarChart2 } from "lucide-react";
 
 function timeLeft(iso: string) {
   const diff = new Date(iso).getTime() - Date.now();
@@ -62,12 +53,34 @@ export default function HomePage() {
           const liveDebates = thread.debates.filter((d) => d.status === "live");
           const totalViewersNow = liveDebates.reduce((s, d) => s + d.viewers, 0);
           const isHot = totalViewersNow > 300 || idx === 0;
+          const linkedWork = thread.sourceWorkId
+            ? GOVERNMENT_WORKS.find((w) => w.id === thread.sourceWorkId)
+            : null;
 
           return (
             <div
               key={thread.id}
-              className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden"
+              className={`bg-white rounded-xl shadow-sm border hover:shadow-md transition-shadow overflow-hidden ${
+                linkedWork ? "border-[#2D7D7E]/30" : "border-gray-100"
+              }`}
             >
+              {/* Transparency source banner */}
+              {linkedWork && (
+                <div className="bg-[#2D7D7E]/8 border-b border-[#2D7D7E]/20 px-5 py-2 flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2 text-xs text-[#2D7D7E] font-medium">
+                    <BarChart2 size={13} />
+                    Sourced from Government Works Tracker —{" "}
+                    <span className="font-semibold">{linkedWork.title}</span>
+                  </div>
+                  <Link
+                    href="/transparency"
+                    className="text-xs text-[#2D7D7E] underline underline-offset-2 hover:text-[#236969] font-semibold whitespace-nowrap"
+                  >
+                    View Project Data →
+                  </Link>
+                </div>
+              )}
+
               {/* Top bar */}
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -96,6 +109,24 @@ export default function HomePage() {
                   {thread.title}
                 </h2>
                 <p className="text-sm text-gray-600 line-clamp-2">{thread.description}</p>
+
+                {/* Linked project quick stats */}
+                {linkedWork && (
+                  <div className="mt-3 grid grid-cols-3 gap-2 bg-[#2D7D7E]/5 border border-[#2D7D7E]/15 rounded-lg px-3 py-2">
+                    <div className="text-center">
+                      <p className="text-xs text-gray-500">Allocated</p>
+                      <p className="text-sm font-bold text-gray-800">₹{linkedWork.allocatedBudget}L</p>
+                    </div>
+                    <div className="text-center border-x border-[#2D7D7E]/15">
+                      <p className="text-xs text-gray-500">Progress</p>
+                      <p className="text-sm font-bold text-amber-600">{linkedWork.progress}%</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs text-gray-500">Status</p>
+                      <p className="text-sm font-bold text-red-500 capitalize">{linkedWork.status}</p>
+                    </div>
+                  </div>
+                )}
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-1.5 mt-3">

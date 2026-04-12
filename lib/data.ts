@@ -850,6 +850,204 @@ export const THREADS: Thread[] = [
     ],
     commonPointsSummary: undefined,
   },
+  // ── Thread 7: Dwarka Pipeline (LINKED TO TRANSPARENCY) ────────────────────
+  {
+    id: "t-7",
+    title: "Dwarka Water Pipeline Delayed by 8 Months — Who Is Accountable?",
+    description:
+      "According to data on Chirp's Government Works Tracker, the underground water pipeline project in Dwarka Phase 2 (Sectors 10–22) — allocated ₹1,200 lakh under Jal Jeevan Mission Urban — is running 8 months behind schedule. As of April 2026, only 42% of the work is complete despite 42% of the budget (₹504 lakh) already being spent. The official reason cited is delay in Right-of-Way clearances from DMRC. 1.2 lakh households in Dwarka continue to depend on water tankers. The question: is the government doing enough to resolve inter-agency deadlocks, or is this a systemic failure of project management?",
+    category: "Government Accountability",
+    postedBy: "Admin Team",
+    postedAt: "2026-04-12T07:00:00Z",
+    deadlineAt: "2026-04-13T07:00:00Z",
+    status: "active",
+    tags: ["Water", "Dwarka", "Jal Jeevan Mission", "Accountability", "DMRC", "Delhi"],
+    sourceWorkId: "gw-4",
+    comments: [
+      {
+        id: "c-12",
+        threadId: "t-7",
+        userId: "u-2",
+        userName: "Priya Patel",
+        userAvatar: "PP",
+        content:
+          "I checked the tracker — ₹504 lakh spent and only 42% done. In a normal infrastructure project that ratio is concerning. The money is going somewhere even if the pipes aren't being laid.",
+        likes: 67,
+        likedBy: ["u-1", "u-3", "u-5"],
+        timestamp: "2026-04-12T07:30:00Z",
+        replies: [
+          {
+            id: "r-7",
+            userId: "u-3",
+            userName: "Amit Kumar",
+            userAvatar: "AK",
+            content:
+              "The DMRC clearance excuse is legitimate — I've seen this happen on multiple projects. But the government should have anticipated ROW issues before even tendering the project.",
+            likes: 29,
+            likedBy: ["u-2"],
+            timestamp: "2026-04-12T08:00:00Z",
+          },
+        ],
+      },
+      {
+        id: "c-13",
+        threadId: "t-7",
+        userId: "u-5",
+        userName: "Vikram Singh",
+        userAvatar: "VS",
+        content:
+          "1.2 lakh households without piped water in 2026, in the capital city. While metro expansion gets fast-tracked. There's something wrong with priority-setting here.",
+        likes: 88,
+        likedBy: ["u-1", "u-2", "u-3", "u-4"],
+        timestamp: "2026-04-12T09:00:00Z",
+        replies: [
+          {
+            id: "r-8",
+            userId: "u-1",
+            userName: "Rahul Sharma",
+            userAvatar: "RS",
+            content:
+              "Metro has a dedicated authority (DMRC) with political backing. Water supply falls under DJB which is chronically underfunded. It's an institutional design problem.",
+            likes: 41,
+            likedBy: ["u-5"],
+            timestamp: "2026-04-12T09:20:00Z",
+          },
+        ],
+      },
+      {
+        id: "c-14",
+        threadId: "t-7",
+        userId: "u-4",
+        userName: "Sneha Gupta",
+        userAvatar: "SG",
+        content:
+          "This is exactly why the transparency tracker matters. Without this data, we wouldn't even know the project is delayed. Most citizens in Dwarka probably don't know their ₹1,200 lakh project is 8 months behind.",
+        likes: 73,
+        likedBy: ["u-1", "u-2", "u-5"],
+        timestamp: "2026-04-12T10:00:00Z",
+        replies: [],
+      },
+    ],
+    debates: [
+      {
+        id: "d-10",
+        threadId: "t-7",
+        topic: "Is the government responsible for the Dwarka pipeline delay?",
+        forUser: { id: "u-2", name: "Priya Patel", avatar: "PP" },
+        againstUser: { id: "u-1", name: "Rahul Sharma", avatar: "RS" },
+        viewers: 334,
+        status: "live",
+        startTime: "2026-04-12T08:00:00Z",
+        messages: [
+          {
+            id: "m-37",
+            userId: "u-2",
+            userName: "Priya Patel",
+            side: "for",
+            content:
+              "The government allocated ₹1,200 lakh and started this project knowing DMRC infrastructure exists in Dwarka. Failure to obtain ROW clearances before tendering is a planning failure, not an act of god. That's government negligence.",
+            timestamp: "2026-04-12T08:01:00Z",
+          },
+          {
+            id: "m-38",
+            userId: "u-1",
+            userName: "Rahul Sharma",
+            side: "against",
+            content:
+              "ROW negotiations with DMRC are genuinely complex — DMRC is a separate legal entity with its own board. The government cannot simply override another statutory body. This is an inter-agency coordination problem, not negligence.",
+            timestamp: "2026-04-12T08:05:00Z",
+          },
+          {
+            id: "m-39",
+            userId: "u-2",
+            userName: "Priya Patel",
+            side: "for",
+            content:
+              "Then why was the project approved and funded without resolving that coordination first? You don't hand ₹1,200 lakh to a contractor and then discover there's a clearance problem. That's either incompetence or deliberate disregard.",
+            timestamp: "2026-04-12T08:09:00Z",
+          },
+          {
+            id: "m-40",
+            userId: "u-1",
+            userName: "Rahul Sharma",
+            side: "against",
+            content:
+              "Projects are often approved optimistically — that's a systemic issue across all infrastructure ministries globally, not specific to this government. The Jal Jeevan Mission itself has an excellent overall completion record nationally.",
+            timestamp: "2026-04-12T08:13:00Z",
+          },
+          {
+            id: "m-41",
+            userId: "u-2",
+            userName: "Priya Patel",
+            side: "for",
+            content:
+              "National record doesn't help the 1.2 lakh households in Dwarka paying for water tankers today. And at 42% spend for 42% work, the budget is being consumed even while the project stalls. Someone should answer for that.",
+            timestamp: "2026-04-12T08:17:00Z",
+          },
+          {
+            id: "m-42",
+            userId: "u-1",
+            userName: "Rahul Sharma",
+            side: "against",
+            content:
+              "Agreed that accountability is needed — but it should target the specific inter-ministerial bottleneck, not be used to paint the entire water mission as a failure. A Parliamentary committee review of DMRC-DJB coordination would be the right response.",
+            timestamp: "2026-04-12T08:21:00Z",
+          },
+        ],
+        aiSummary: undefined,
+      },
+      {
+        id: "d-11",
+        threadId: "t-7",
+        topic: "Is the government responsible for the Dwarka pipeline delay?",
+        forUser: { id: "u-5", name: "Vikram Singh", avatar: "VS" },
+        againstUser: { id: "u-3", name: "Amit Kumar", avatar: "AK" },
+        viewers: 189,
+        status: "live",
+        startTime: "2026-04-12T09:30:00Z",
+        messages: [
+          {
+            id: "m-43",
+            userId: "u-5",
+            userName: "Vikram Singh",
+            side: "for",
+            content:
+              "The tracker shows ₹504 lakh spent with 42% progress. If this were a private contractor spending 42% of the budget for 42% of the work on a stalled project, they'd be blacklisted. Why does the government get a pass?",
+            timestamp: "2026-04-12T09:31:00Z",
+          },
+          {
+            id: "m-44",
+            userId: "u-3",
+            userName: "Amit Kumar",
+            side: "against",
+            content:
+              "Because 42% spend for 42% work is actually proportional — that's not a red flag. The issue is timeline, not budget misuse. The contractor has laid pipes where clearance was given. The delay is in specific DMRC-controlled stretches.",
+            timestamp: "2026-04-12T09:35:00Z",
+          },
+          {
+            id: "m-45",
+            userId: "u-5",
+            userName: "Vikram Singh",
+            side: "for",
+            content:
+              "Whether it's timeline or budget, the residents lose. And since this data is now public on the tracker, the government can't claim ignorance. They know. Inaction after knowing is accountability.",
+            timestamp: "2026-04-12T09:39:00Z",
+          },
+          {
+            id: "m-46",
+            userId: "u-3",
+            userName: "Amit Kumar",
+            side: "against",
+            content:
+              "I'd rather see citizens use this tracker data to pressure their local MP — that's the right democratic lever. The MP for South West Delhi should be raising this in Parliament. That's what this platform should enable.",
+            timestamp: "2026-04-12T09:43:00Z",
+          },
+        ],
+        aiSummary: undefined,
+      },
+    ],
+    commonPointsSummary: undefined,
+  },
 ];
 
 // ─── GOVERNMENT WORKS ─────────────────────────────────────────────────────────
