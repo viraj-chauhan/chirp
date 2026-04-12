@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Light teal speech bubble (left) -->
+  <ellipse cx="72" cy="112" rx="42" ry="36" fill="#96C4C4"/>
+  <polygon points="68,144 52,165 82,144" fill="#96C4C4"/>
+
+  <!-- Amber speech bubble (top right) -->
+  <circle cx="144" cy="90" r="30" fill="#F0A500"/>
+
+  <!-- Dark gray speech bubble (bottom right) -->
+  <ellipse cx="150" cy="130" rx="27" ry="23" fill="#555059"/>
+  <polygon points="138,149 133,168 155,149" fill="#555059"/>
+
+  <!-- Microphone body (teal) -->
+  <rect x="84" y="36" width="38" height="74" rx="19" fill="#2D7D7E"/>
+  <!-- Grille lines -->
+  <line x1="88" y1="57" x2="118" y2="57" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="88" y1="67" x2="118" y2="67" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="88" y1="77" x2="118" y2="77" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="88" y1="87" x2="118" y2="87" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="88" y1="97" x2="118" y2="97" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Mic U-neck -->
+  <path d="M84 108 Q103 136 122 108" stroke="#2D7D7E" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <!-- Amber accent on right side of U -->
+  <path d="M103 136 Q122 136 122 108" stroke="#F0A500" stroke-width="7" fill="none" stroke-linecap="round"/>
+
+  <!-- Vertical stand -->
+  <rect x="99" y="134" width="8" height="22" rx="4" fill="#2D7D7E"/>
+  <!-- Base -->
+  <rect x="78" y="154" width="50" height="9" rx="4.5" fill="#2D7D7E"/>
+</svg>
