@@ -20,6 +20,29 @@ Chirp addresses this by giving every citizen a structured, moderated space to de
 
 ---
 
+## The Role of AI
+
+AI is a core part of what makes Chirp usable at scale — not a bolt-on feature.
+
+**Without AI, civic debate platforms fail because of information overload.** A single thread can generate dozens of debates, hundreds of arguments, and thousands of comments. No citizen has time to read all of that. AI solves this in two critical ways:
+
+### 🤖 Debate Transcripts
+After a live debate ends, AI reads the full exchange and produces a clean, structured summary — key arguments from the FOR side and the AGAINST side, in plain language. What would take a reader 10–15 minutes to parse is condensed into a 30-second read. Crucially, **AI never draws a conclusion** — it only surfaces what was said, leaving the judgement entirely to the citizen.
+
+After the full 24-hour debate window closes, AI also aggregates arguments across *all* debates on a thread and surfaces the most common points from each side — giving the public a birds-eye view of the national conversation on an issue.
+
+### 🤖 Civic Education Chatbot
+Most citizens don't have time to read 50-page party manifestos or navigate the Election Commission website. The chatbot solves this instantly:
+- Ask a question in plain language → get a clear, sourced answer in seconds
+- Describe a problem you face → get told which leader has promised to address it
+- Ask about voter rights, EVMs, or how to file a complaint → get step-by-step guidance
+
+This lowers the barrier to informed participation dramatically. A first-time voter in a rural area gets the same quality of civic information as a political analyst in Delhi.
+
+**In short: AI handles the heavy lifting of information processing so citizens can focus on forming opinions, not consuming raw data.**
+
+---
+
 ## Features
 
 ### 🗣️ Online Debating
