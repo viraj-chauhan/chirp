@@ -14,6 +14,52 @@ interface Message {
 function findAnswer(query: string): string {
   const q = query.toLowerCase().trim();
 
+  // Greetings
+  if (/^(hi|hello|hey|hii+|helo|namaste|namaskar|good morning|good evening|good afternoon|good night|howdy|sup|what'?s up)[\s!?.]*$/.test(q)) {
+    return `Hello! 👋 Welcome to **CivicBot** — your guide to Indian civic life.
+
+I can help you with:
+• **Voter registration & rights**
+• **Party manifestos** – BJP, Congress, AAP, Samajwadi Party
+• **Policy search** – tell me a problem, I'll find which leader addressed it
+
+Type **help** to see everything I can do, or just ask away!`;
+  }
+
+  // Identity questions
+  if (q.includes("who are you") || q.includes("what are you") || q.includes("what is civicbot") || q.includes("about you") || q.includes("introduce yourself")) {
+    return `I'm **CivicBot** 🤖 — Chirp's civic education assistant.
+
+I'm built to help Indian citizens stay informed about:
+• Their **voting rights and registration** process
+• **Party manifestos** and leader promises
+• **Civic policies** – from healthcare to employment to education
+
+I'm not a general AI — I specialise in Indian civic and electoral information. Ask me something specific and I'll do my best!`;
+  }
+
+  // How are you
+  if (/how are you|how r u|how're you|you okay|you good/.test(q)) {
+    return `I'm doing great, thanks for asking! 😊 Ready to help you navigate India's civic landscape.
+
+What would you like to know today? You can ask me about voter rights, party manifestos, or type **help** for a full list of topics.`;
+  }
+
+  // Thank you
+  if (/^(thanks|thank you|thank u|thanks a lot|thank you so much|ty|thx|cheers|great thanks)[\s!.]*$/.test(q)) {
+    return `You're welcome! 🙏 Feel free to ask anything else about voter rights, manifestos, or civic policies. I'm here to help!`;
+  }
+
+  // Goodbye
+  if (/^(bye|goodbye|good bye|see you|see ya|take care|ciao|later|ttyl)[\s!.]*$/.test(q)) {
+    return `Goodbye! 👋 Stay informed, stay engaged — every vote matters. Come back anytime you have questions about civic life in India!`;
+  }
+
+  // I need help / general help
+  if (/^(i need help|need help|can you help|help me|assist me|i'm lost|i am lost)[\s!?.]*$/.test(q)) {
+    return HELP_MESSAGE;
+  }
+
   // Voter rights / general civics
   for (const item of VOTER_RIGHTS) {
     if (item.keywords.some((kw) => q.includes(kw.toLowerCase()))) {
