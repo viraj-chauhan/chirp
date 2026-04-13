@@ -55,19 +55,65 @@ What would you like to know today? You can ask me about voter rights, party mani
     return `Goodbye! 👋 Stay informed, stay engaged — every vote matters. Come back anytime you have questions about civic life in India!`;
   }
 
-  // I need help / general help
-  if (/^(i need help|need help|can you help|help me|assist me|i'm lost|i am lost)[\s!?.]*$/.test(q)) {
+  // I need help / general help (exact phrase only, so "i need help regarding X" falls through)
+  if (/^(i need help|need help|can you help me|help me|assist me|i'm lost|i am lost)[\s!?.]*$/.test(q)) {
     return HELP_MESSAGE;
   }
 
-  // Voter rights / general civics
-  for (const item of VOTER_RIGHTS) {
-    if (item.keywords.some((kw) => q.includes(kw.toLowerCase()))) {
-      return item.answer;
-    }
-  }
+  // ── Smart keyword extraction ──────────────────────────────────────────────
+  // Strip filler/stop words so "my problem is jobs" → ["jobs"]
+  const STOP_WORDS = new Set([
+    "i", "my", "me", "we", "our", "us", "the", "a", "an",
+    "is", "are", "was", "were", "be", "been", "being",
+    "have", "has", "had", "do", "does", "did",
+    "will", "would", "could", "should", "shall", "may", "might", "must",
+    "need", "want", "like", "get", "got",
+    "help", "regarding", "about", "tell", "show", "give", "know", "find",
+    "what", "which", "who", "how", "when", "where", "why",
+    "that", "this", "these", "those",
+    "and", "or", "but", "if", "of", "to", "for", "in", "on", "at",
+    "by", "with", "from", "up", "as", "it", "its", "him", "her",
+    "their", "please", "can", "you", "your", "some", "any", "all",
+    "let", "just", "very", "much", "more", "most", "so", "also",
+    "related", "topic", "topics", "question", "information", "info",
+    "detail", "details", "problem", "issue", "concern", "thing", "things",
+  ]);
 
-  // Leader lookup
+  const queryWords = q
+    .replace(/[?!.,]/g, "")
+    .split(/\s+/)
+    .filter((w) => w.length >= 2 && !STOP_WORDS.has(w));
+
+  // Word-boundary keyword matcher — prevents "st" matching inside "manifesto"
+  const matchKeyword = (keyword: string): boolean => {
+    const kw = keyword.toLowerCase();
+    // 1. Exact word-boundary match in the full query
+    try {
+      const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      if (new RegExp(`\\b${escaped}\\b`).test(q)) return true;
+    } catch {}
+    // 2. Prefix/stem match via extracted words (handles "job"↔"jobs", "employ"↔"employment")
+    return queryWords.some((w) => {
+      if (w === kw) return true;
+      const minLen = Math.min(w.length, kw.length);
+      if (minLen >= 4 && (kw.startsWith(w) || w.startsWith(kw))) return true;
+      return false;
+    });
+  };
+
+  // ── Intent signals ────────────────────────────────────────────────────────
+  const isManifestoQuery = [
+    "manifesto", "promise", "promis", "policy", "policies", "party",
+    "leader", "bjp", "congress", "aap", "sp", "samajwadi",
+    "modi", "kejriwal", "kharge", "akhilesh", "rahul", "gandhi",
+  ].some((w) => q.includes(w));
+
+  const isVoterQuery = [
+    "vote", "voter", "voting", "election", "register", "registration",
+    "evm", "complaint", "booth", "polling", "ballot", "mcc", "nota",
+  ].some((w) => q.includes(w));
+
+  // ── Leader lookup (always runs first) ────────────────────────────────────
   const leaderMatch = LEADERS.find(
     (l) =>
       q.includes(l.name.toLowerCase()) ||
@@ -91,20 +137,27 @@ What would you like to know today? You can ask me about voter rights, party mani
     return lines.join("\n");
   }
 
-  // Problem → leader matching
+  // ── Manifesto keyword search ──────────────────────────────────────────────
   const allManifestoItems = LEADERS.flatMap((l) =>
     l.manifesto.map((m) => ({ leader: l, item: m }))
   );
 
-  const matches = allManifestoItems.filter(({ item }) =>
-    item.keywords.some((kw) => q.includes(kw.toLowerCase()))
+  const manifMatches = allManifestoItems.filter(({ item }) =>
+    item.keywords.some((kw) => matchKeyword(kw))
   );
 
-  if (matches.length > 0) {
+  // ── Voter rights keyword search ───────────────────────────────────────────
+  const voterMatch = VOTER_RIGHTS.find((item) =>
+    item.keywords.some((kw) => matchKeyword(kw))
+  );
+
+  // ── Priority routing ──────────────────────────────────────────────────────
+  // Manifesto intent → show manifesto results first
+  if (isManifestoQuery && manifMatches.length > 0) {
     const lines = [
-      `**Manifesto promises related to "${query}":**`,
+      `**Manifesto promises related to your query:**`,
       "",
-      ...matches.map(
+      ...manifMatches.map(
         ({ leader, item }) =>
           `📌 **${leader.name} (${leader.party.split("(")[1]?.replace(")", "") || leader.party}):**\n   ${item.promise}\n   ↳ ${item.detail}`
       ),
@@ -112,7 +165,29 @@ What would you like to know today? You can ask me about voter rights, party mani
     return lines.join("\n\n");
   }
 
-  // Fallback suggestions
+  // Voter intent → show voter rights first
+  if (isVoterQuery && voterMatch) {
+    return voterMatch.answer;
+  }
+
+  // No strong intent signal → topic/problem search: manifesto first, voter fallback
+  if (manifMatches.length > 0) {
+    const lines = [
+      `**Manifesto promises related to your query:**`,
+      "",
+      ...manifMatches.map(
+        ({ leader, item }) =>
+          `📌 **${leader.name} (${leader.party.split("(")[1]?.replace(")", "") || leader.party}):**\n   ${item.promise}\n   ↳ ${item.detail}`
+      ),
+    ];
+    return lines.join("\n\n");
+  }
+
+  if (voterMatch) {
+    return voterMatch.answer;
+  }
+
+  // ── Fallback ──────────────────────────────────────────────────────────────
   if (q.includes("help") || q.includes("what can") || q.length < 3) {
     return HELP_MESSAGE;
   }
