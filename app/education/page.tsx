@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { LEADERS, VOTER_RIGHTS } from "@/lib/data";
-import { Send, Bot, User, BookOpen, ChevronDown, ChevronUp } from "lucide-react";
+import { LEADERS } from "@/lib/data";
+import { Send, Bot, User, BookOpen, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 
 interface Message {
   id: string;
   role: "user" | "bot";
   content: string;
   timestamp: Date;
+  streaming?: boolean;
 }
 
-function findAnswer(query: string): string {
+// Returns an instant string for conversational inputs, null for civic queries that need Claude
+function getInstantResponse(query: string): string | null {
   const q = query.toLowerCase().trim();
 
   // Greetings
@@ -35,7 +37,7 @@ I'm built to help Indian citizens stay informed about:
 • **Party manifestos** and leader promises
 • **Civic policies** – from healthcare to employment to education
 
-I'm not a general AI — I specialise in Indian civic and electoral information. Ask me something specific and I'll do my best!`;
+I specialise in Indian civic and electoral information. Ask me something specific and I'll do my best!`;
   }
 
   // How are you
@@ -55,154 +57,12 @@ What would you like to know today? You can ask me about voter rights, party mani
     return `Goodbye! 👋 Stay informed, stay engaged — every vote matters. Come back anytime you have questions about civic life in India!`;
   }
 
-  // I need help / general help (exact phrase only, so "i need help regarding X" falls through)
-  if (/^(i need help|need help|can you help me|help me|assist me|i'm lost|i am lost)[\s!?.]*$/.test(q)) {
+  // Help (exact phrase only)
+  if (/^(help|i need help|need help|can you help me|help me|assist me|i'm lost|i am lost)[\s!?.]*$/.test(q)) {
     return HELP_MESSAGE;
   }
 
-  // ── Smart keyword extraction ──────────────────────────────────────────────
-  // Strip filler/stop words so "my problem is jobs" → ["jobs"]
-  const STOP_WORDS = new Set([
-    "i", "my", "me", "we", "our", "us", "the", "a", "an",
-    "is", "are", "was", "were", "be", "been", "being",
-    "have", "has", "had", "do", "does", "did",
-    "will", "would", "could", "should", "shall", "may", "might", "must",
-    "need", "want", "like", "get", "got",
-    "help", "regarding", "about", "tell", "show", "give", "know", "find",
-    "what", "which", "who", "how", "when", "where", "why",
-    "that", "this", "these", "those",
-    "and", "or", "but", "if", "of", "to", "for", "in", "on", "at",
-    "by", "with", "from", "up", "as", "it", "its", "him", "her",
-    "their", "please", "can", "you", "your", "some", "any", "all",
-    "let", "just", "very", "much", "more", "most", "so", "also",
-    "related", "topic", "topics", "question", "information", "info",
-    "detail", "details", "problem", "issue", "concern", "thing", "things",
-  ]);
-
-  const queryWords = q
-    .replace(/[?!.,]/g, "")
-    .split(/\s+/)
-    .filter((w) => w.length >= 2 && !STOP_WORDS.has(w));
-
-  // Word-boundary keyword matcher — prevents "st" matching inside "manifesto"
-  const matchKeyword = (keyword: string): boolean => {
-    const kw = keyword.toLowerCase();
-    // 1. Exact word-boundary match in the full query
-    try {
-      const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      if (new RegExp(`\\b${escaped}\\b`).test(q)) return true;
-    } catch {}
-    // 2. Prefix/stem match via extracted words (handles "job"↔"jobs", "employ"↔"employment")
-    return queryWords.some((w) => {
-      if (w === kw) return true;
-      const minLen = Math.min(w.length, kw.length);
-      if (minLen >= 4 && (kw.startsWith(w) || w.startsWith(kw))) return true;
-      return false;
-    });
-  };
-
-  // ── Intent signals ────────────────────────────────────────────────────────
-  const isManifestoQuery = [
-    "manifesto", "promise", "promis", "policy", "policies", "party",
-    "leader", "bjp", "congress", "aap", "sp", "samajwadi",
-    "modi", "kejriwal", "kharge", "akhilesh", "rahul", "gandhi",
-  ].some((w) => q.includes(w));
-
-  const isVoterQuery = [
-    "vote", "voter", "voting", "election", "register", "registration",
-    "evm", "complaint", "booth", "polling", "ballot", "mcc", "nota",
-  ].some((w) => q.includes(w));
-
-  // ── Leader lookup (always runs first) ────────────────────────────────────
-  const leaderMatch = LEADERS.find(
-    (l) =>
-      q.includes(l.name.toLowerCase()) ||
-      q.includes(l.party.toLowerCase().split("(")[0].trim().toLowerCase()) ||
-      (l.party.includes("BJP") && (q.includes("bjp") || q.includes("modi"))) ||
-      (l.party.includes("Congress") && (q.includes("congress") || q.includes("kharge"))) ||
-      (l.party.includes("AAP") && (q.includes("aap") || q.includes("kejriwal"))) ||
-      (l.party.includes("Samajwadi") && (q.includes("sp") || q.includes("akhilesh") || q.includes("samajwadi")))
-  );
-
-  if (leaderMatch) {
-    const lines = [
-      `**${leaderMatch.name} – ${leaderMatch.party}**`,
-      `*Position: ${leaderMatch.position} | Constituency: ${leaderMatch.constituency}*`,
-      "",
-      "**Key Manifesto Promises:**",
-      ...leaderMatch.manifesto.map(
-        (m, i) => `${i + 1}. **${m.category}:** ${m.promise}\n   ${m.detail}`
-      ),
-    ];
-    return lines.join("\n");
-  }
-
-  // ── Manifesto keyword search ──────────────────────────────────────────────
-  const allManifestoItems = LEADERS.flatMap((l) =>
-    l.manifesto.map((m) => ({ leader: l, item: m }))
-  );
-
-  const manifMatches = allManifestoItems.filter(({ item }) =>
-    item.keywords.some((kw) => matchKeyword(kw))
-  );
-
-  // ── Voter rights keyword search ───────────────────────────────────────────
-  const voterMatch = VOTER_RIGHTS.find((item) =>
-    item.keywords.some((kw) => matchKeyword(kw))
-  );
-
-  // ── Priority routing ──────────────────────────────────────────────────────
-  // Manifesto intent → show manifesto results first
-  if (isManifestoQuery && manifMatches.length > 0) {
-    const lines = [
-      `**Manifesto promises related to your query:**`,
-      "",
-      ...manifMatches.map(
-        ({ leader, item }) =>
-          `📌 **${leader.name} (${leader.party.split("(")[1]?.replace(")", "") || leader.party}):**\n   ${item.promise}\n   ↳ ${item.detail}`
-      ),
-    ];
-    return lines.join("\n\n");
-  }
-
-  // Voter intent → show voter rights first
-  if (isVoterQuery && voterMatch) {
-    return voterMatch.answer;
-  }
-
-  // No strong intent signal → topic/problem search: manifesto first, voter fallback
-  if (manifMatches.length > 0) {
-    const lines = [
-      `**Manifesto promises related to your query:**`,
-      "",
-      ...manifMatches.map(
-        ({ leader, item }) =>
-          `📌 **${leader.name} (${leader.party.split("(")[1]?.replace(")", "") || leader.party}):**\n   ${item.promise}\n   ↳ ${item.detail}`
-      ),
-    ];
-    return lines.join("\n\n");
-  }
-
-  if (voterMatch) {
-    return voterMatch.answer;
-  }
-
-  // ── Fallback ──────────────────────────────────────────────────────────────
-  if (q.includes("help") || q.includes("what can") || q.length < 3) {
-    return HELP_MESSAGE;
-  }
-
-  return `I couldn't find specific information about "${query}" in my database. Try asking about:
-
-• **Voter registration** – how to register, documents needed
-• **Voting rights** – your rights at the polling booth
-• **Leader manifesto** – e.g. "What has BJP promised for healthcare?"
-• **Policy search** – e.g. "Which leader promised free electricity?"
-• **Voter complaints** – how to report election violations
-• **EVM** – how electronic voting machines work
-• **Model Code of Conduct** – what is allowed during elections
-
-Type **help** to see all available topics.`;
+  return null; // route to Claude API
 }
 
 const HELP_MESSAGE = `**Welcome to Chirp's Civic Education Chatbot!** 🗳️
@@ -254,6 +114,7 @@ export default function EducationPage() {
     },
   ]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [showManifestos, setShowManifestos] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -261,9 +122,9 @@ export default function EducationPage() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = (text?: string) => {
+  const sendMessage = async (text?: string) => {
     const query = (text ?? input).trim();
-    if (!query) return;
+    if (!query || isLoading) return;
 
     const userMsg: Message = {
       id: `u-${Date.now()}`,
@@ -272,25 +133,83 @@ export default function EducationPage() {
       timestamp: new Date(),
     };
 
-    const answer = findAnswer(query);
-    const botMsg: Message = {
-      id: `b-${Date.now()}`,
-      role: "bot",
-      content: answer,
-      timestamp: new Date(),
-    };
+    // Check for instant conversational responses first
+    const instant = getInstantResponse(query);
+    if (instant) {
+      const botMsg: Message = {
+        id: `b-${Date.now()}`,
+        role: "bot",
+        content: instant,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, userMsg, botMsg]);
+      setInput("");
+      return;
+    }
 
-    setMessages((prev) => [...prev, userMsg, botMsg]);
+    // Civic query → stream from Claude API
+    const botId = `b-${Date.now()}`;
+    setMessages((prev) => [
+      ...prev,
+      userMsg,
+      { id: botId, role: "bot", content: "", timestamp: new Date(), streaming: true },
+    ]);
     setInput("");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/civicbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+
+      if (!res.ok || !res.body) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === botId ? { ...m, content: m.content + chunk } : m
+          )
+        );
+      }
+
+      // Mark streaming done
+      setMessages((prev) =>
+        prev.map((m) => (m.id === botId ? { ...m, streaming: false } : m))
+      );
+    } catch {
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === botId
+            ? {
+                ...m,
+                content:
+                  "Sorry, I'm having trouble connecting right now. Please check your API key and try again.",
+                streaming: false,
+              }
+            : m
+        )
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderContent = (content: string) => {
-    // Simple markdown-like renderer
+    if (!content) return <span className="opacity-40 animate-pulse">Thinking…</span>;
     return content.split("\n").map((line, i) => {
       if (line.startsWith("**") && line.endsWith("**") && !line.slice(2, -2).includes("**")) {
         return <p key={i} className="font-bold text-gray-900 mt-2">{line.slice(2, -2)}</p>;
       }
-      // Bold inline
       const parts = line.split(/(\*\*[^*]+\*\*)/g);
       const rendered = parts.map((part, j) => {
         if (part.startsWith("**") && part.endsWith("**")) {
@@ -325,7 +244,15 @@ export default function EducationPage() {
           <div className="px-4 py-3 border-b border-gray-100 flex items-center gap-2">
             <Bot size={18} className="text-blue-600" />
             <span className="font-semibold text-gray-800">CivicBot</span>
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full ml-auto">Online</span>
+            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full ml-1">
+              AI Powered
+            </span>
+            {isLoading && (
+              <Loader2 size={14} className="text-[#2D7D7E] animate-spin ml-auto" />
+            )}
+            {!isLoading && (
+              <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full ml-auto">Online</span>
+            )}
           </div>
 
           {/* Messages */}
@@ -365,15 +292,17 @@ export default function EducationPage() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                onKeyDown={(e) => e.key === "Enter" && !isLoading && sendMessage()}
                 placeholder="Ask about manifestos, voter rights, policies…"
-                className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-blue-400"
+                disabled={isLoading}
+                className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-blue-400 disabled:opacity-60"
               />
               <button
                 onClick={() => sendMessage()}
-                className="px-3 py-2 bg-[#2D7D7E] text-white rounded-lg hover:bg-[#236969] transition-colors"
+                disabled={isLoading || !input.trim()}
+                className="px-3 py-2 bg-[#2D7D7E] text-white rounded-lg hover:bg-[#236969] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <Send size={16} />
+                {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
               </button>
             </div>
           </div>
@@ -389,7 +318,8 @@ export default function EducationPage() {
                 <button
                   key={prompt}
                   onClick={() => sendMessage(prompt)}
-                  className="w-full text-left text-xs text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg px-3 py-2 transition-colors"
+                  disabled={isLoading}
+                  className="w-full text-left text-xs text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg px-3 py-2 transition-colors disabled:opacity-60"
                 >
                   {prompt}
                 </button>

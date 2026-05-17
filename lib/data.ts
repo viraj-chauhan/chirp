@@ -69,7 +69,7 @@ export const THREADS: Thread[] = [
     category: "Law & Governance",
     postedBy: "Admin Team",
     postedAt: "2026-04-12T06:00:00Z",
-    deadlineAt: "2026-04-13T06:00:00Z",
+    deadlineAt: "2026-04-20T18:29:00Z",
     status: "active",
     tags: ["UCC", "Constitution", "Minorities", "Gender Equality"],
     comments: [
@@ -401,7 +401,7 @@ export const THREADS: Thread[] = [
     category: "Economy",
     postedBy: "Admin Team",
     postedAt: "2026-04-12T05:00:00Z",
-    deadlineAt: "2026-04-13T05:00:00Z",
+    deadlineAt: "2026-04-20T18:29:00Z",
     status: "active",
     tags: ["Fuel", "Taxation", "Economy", "Inflation"],
     comments: [
@@ -551,7 +551,7 @@ export const THREADS: Thread[] = [
     category: "Education",
     postedBy: "Admin Team",
     postedAt: "2026-04-12T04:00:00Z",
-    deadlineAt: "2026-04-13T04:00:00Z",
+    deadlineAt: "2026-04-20T18:29:00Z",
     status: "active",
     tags: ["NEP", "Education", "Policy", "Students"],
     comments: [
@@ -655,7 +655,7 @@ export const THREADS: Thread[] = [
     category: "Technology & Economy",
     postedBy: "Admin Team",
     postedAt: "2026-04-12T08:00:00Z",
-    deadlineAt: "2026-04-13T08:00:00Z",
+    deadlineAt: "2026-04-20T18:29:00Z",
     status: "active",
     tags: ["AI", "Jobs", "Technology", "Regulation"],
     comments: [
@@ -775,7 +775,7 @@ export const THREADS: Thread[] = [
     category: "Governance",
     postedBy: "Admin Team",
     postedAt: "2026-04-10T06:00:00Z",
-    deadlineAt: "2026-04-11T06:00:00Z",
+    deadlineAt: "2026-04-20T18:29:00Z",
     status: "archived",
     tags: ["Electoral Bonds", "Supreme Court", "Political Funding", "Democracy"],
     comments: [
@@ -861,7 +861,7 @@ export const THREADS: Thread[] = [
     category: "Economy & Development",
     postedBy: "Admin Team",
     postedAt: "2026-04-12T03:00:00Z",
-    deadlineAt: "2026-04-13T03:00:00Z",
+    deadlineAt: "2026-04-20T18:29:00Z",
     status: "active",
     tags: ["Budget", "Rural", "Urban", "Development", "MGNREGA"],
     comments: [
@@ -951,7 +951,7 @@ export const THREADS: Thread[] = [
     category: "Government Accountability",
     postedBy: "Admin Team",
     postedAt: "2026-04-12T07:00:00Z",
-    deadlineAt: "2026-04-13T07:00:00Z",
+    deadlineAt: "2026-04-20T18:29:00Z",
     status: "active",
     tags: ["Water", "Dwarka", "Jal Jeevan Mission", "Accountability", "DMRC", "Delhi"],
     sourceWorkId: "gw-4",
